@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Stanford Map</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #mapFrame {
+            position: absolute;
+            top: 50px;
+            bottom: 50px;
+            left: 50px;
+            right: 50px;
+            border: 2px solid black;
+            overflow: hidden;
+        }
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: move;
+        }
+        #controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        #controls button {
+            width: 40px;
+            height: 40px;
+        }
+    </style>
+</head>
+<body>
+<div id="mapFrame">
+    <img id="map" src="map-m.gif" alt="Stanford Map">
+</div>
+<div id="controls">
+    <button id="zoomIn">+</button>
+    <button id="zoomOut">-</button>
+    <button id="up">&#9650;</button>
+    <button id="down">&#9660;</button>
+    <button id="left">&#9668;</button>
+    <button id="right">&#9658;</button>
+</div>
+
+<script>
+    "use strict";
+    var map = document.getElementById("map");
+    var mapFrame = document.getElementById("mapFrame");
+    var controls = document.getElementById("controls");
+
+    var zoomLevels = ["map-s.gif", "map-m.gif", "map-l.gif", "map-xl.gif"];
+    var currentZoom = 1;
+
+    var startX, startY, startLeft, startTop;
+
+    function getCenterCoordinates() {
+        var rect = mapFrame.getBoundingClientRect();
+        var centerX = (rect.width / 2) - parseInt(map.style.left, 10);
+        var centerY = (rect.height / 2) - parseInt(map.style.top, 10);
+        return { x: centerX, y: centerY };
+    }
+
+    function setCenterCoordinates(center) {
+        var rect = mapFrame.getBoundingClientRect();
+        map.style.left = (rect.width / 2 - center.x) + "px";
+        map.style.top = (rect.height / 2 - center.y) + "px";
+    }
+
+    function updateZoom(zoomChange) {
+        var center = getCenterCoordinates();
+        currentZoom = Math.max(0, Math.min(zoomLevels.length - 1, currentZoom + zoomChange));
+        map.src = zoomLevels[currentZoom];
+        setCenterCoordinates(center);
+    }
+
+    map.addEventListener("mousedown", function(e) {
+        e.preventDefault();
+        startX = e.clientX;
+        startY = e.clientY;
+        startLeft = parseInt(map.style.left, 10);
+        startTop = parseInt(map.style.top, 10);
+
+        document.addEventListener("mousemove", onMouseMove);
+        document.addEventListener("mouseup", onMouseUp);
+    });
+
+    function onMouseMove(e) {
+        map.style.left = (startLeft + e.clientX - startX) + "px";
+        map.style.top = (startTop + e.clientY - startY) + "px";
+    }
+
+    function onMouseUp() {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+    }
+
+    map.addEventListener("dblclick", function(e) {
+        var rect = mapFrame.getBoundingClientRect();
+        var newLeft = rect.width / 2 - (e.clientX - rect.left);
+        var newTop = rect.height / 2 - (e.clientY - rect.top);
+        map.style.left = newLeft + "px";
+        map.style.top = newTop + "px";
+    });
+
+    window.addEventListener("resize", function() {
+        var rect = mapFrame.getBoundingClientRect();
+        var centerX = rect.width / 2;
+        var centerY = rect.height / 2;
+        map.style.left = (centerX - map.width / 2) + "px";
+        map.style.top = (centerY - map.height / 2) + "px";
+    });
+
+    document.getElementById("zoomIn").addEventListener("click", function() {
+        updateZoom(1);
+    });
+
+    document.getElementById("zoomOut").addEventListener("click", function() {
+        updateZoom(-1);
+    });
+
+    document.getElementById("up").addEventListener("click", function() {
+        map.style.top = (parseInt(map.style.top, 10) + mapFrame.clientHeight / 2) + "px";
+    });
+
+    document.getElementById("down").addEventListener("click", function() {
+        map.style.top = (parseInt(map.style.top, 10) - mapFrame.clientHeight / 2) + "px";
+    });
+
+    document.getElementById("left").addEventListener("click", function() {
+        map.style.left = (parseInt(map.style.left, 10) + mapFrame.clientWidth / 2) + "px";
+    });
+
+    document.getElementById("right").addEventListener("click", function() {
+        map.style.left = (parseInt(map.style.left, 10) - mapFrame.clientWidth / 2) + "px";
+    });
+
+    window.onload = function() {
+        map.style.left = (mapFrame.clientWidth / 2 - map.width / 2) + "px";
+        map.style.top = (mapFrame.clientHeight / 2 - map.height / 2) + "px";
+    };
+</script>
+</body>
+</html>

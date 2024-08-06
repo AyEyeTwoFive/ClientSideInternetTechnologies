@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Stanford Gallery</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #photoSection {
+            position: absolute;
+            width: 800px;
+            height: 600px;
+        }
+        #caption {
+            padding: 10px;
+            box-sizing: border-box;
+            color: white;
+            font-size: 14pt;
+            font-family: sans-serif;
+            background-color: #008800;
+            opacity: 0.5;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        #forwardOverlay, #backwardOverlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            cursor: pointer;
+        }
+        #forwardOverlay {
+            right: 0;
+        }
+        #backwardOverlay {
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="photoSection">
+    <img id='photo' src='memchu.jpg' alt='photo' />
+    <div id="caption">
+        Stanford Memorial Church - the church used to have an 80' bell tower, which fell in the 1906 earthquake.
+    </div>
+    <div id="forwardOverlay"></div>
+    <div id="backwardOverlay"></div>
+</div>
+<script>
+    "use strict";
+    
+    var photoArray = [
+        {filename: "memchu.jpg", caption: "Stanford Memorial Church - the church used to have an 80' bell tower, which fell in the 1906 earthquake."},
+        {filename: "quad.jpg", caption: "The Stanford Quad"},
+        {filename: "hoop.jpg", caption: "The <i>Red Hoop Fountain</i> with Green Library in the background."},
+        {filename: "memorial-court.jpg", caption: "Memorial Court (in the front of the Quad) with Rodin's <i>Burghers of Calais</i> statues."},
+        {filename: "gates.jpg", caption: "The Gates Building - home of Stanford Computer Science."},
+        {filename: "stone-river.jpg", caption: "The Stone River statue near the Cantor Arts Center (Stanford's own art museum)."},
+    ];
+
+    var currentIndex = 0;
+
+    function showImage(index) {
+        var photo = document.getElementById("photo");
+        var caption = document.getElementById("caption");
+        photo.src = photoArray[index].filename;
+        caption.innerHTML = photoArray[index].caption;
+    }
+
+    function handleResize() {
+        var photoSection = document.getElementById("photoSection");
+        var windowWidth = window.innerWidth;
+        var windowHeight = window.innerHeight;
+        photoSection.style.left = (windowWidth / 2 - 400) + "px";
+        photoSection.style.top = (windowHeight / 2 - 300) + "px";
+    }
+
+    window.addEventListener("resize", handleResize, false);
+
+    document.getElementById("forwardOverlay").onclick = function() {
+        currentIndex = (currentIndex + 1) % photoArray.length;
+        showImage(currentIndex);
+    };
+
+    document.getElementById("backwardOverlay").onclick = function() {
+        currentIndex = (currentIndex - 1 + photoArray.length) % photoArray.length;
+        showImage(currentIndex);
+    };
+
+    window.onload = function() {
+        handleResize();
+        showImage(currentIndex);
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+/* Apply a sans-serif font to the entire document */
+body {
+    font-family: sans-serif;
+}
+
+/* Center the heading */
+h1 {
+    text-align: center;
+}
+
+/* Style the image, float it to the left, and add margins, padding, and border */
+img {
+    float: left;
+    margin: 20px;
+    padding: 5px;
+    /* border: 5px solid #ccc; */
+    max-width: 400px; /* Adjust the size as needed */
+}
+
+/* Style the links with hover effect */
+a:hover {
+    color: red;
+}
+
+/* Style for Stanford spans */
+span.stanford {
+    color: red;
+    font-weight: bold;
+}

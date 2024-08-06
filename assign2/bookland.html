@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookland</title>
+    <link rel="stylesheet" href="bookland.css">
+    <script src="bookland.js" defer></script>
+</head>
+<body>
+    <h1>bookland</h1>
+    <div class="search-container">
+        <label for="author">Author name:</label>
+        <input type="text" id="author" name="author">
+        <label for="title">Book title:</label>
+        <input type="text" id="title" name="title">
+        <button onclick="findBook()">Find book</button>
+        <button onclick="clearInfo()">Clear Info</button>
+        <textarea id="description" readonly></textarea>
+    </div>
+</body>
+</html>

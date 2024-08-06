@@ -1,0 +1,163 @@
+/* Reset default browser margins and paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    color: black;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.banner h1 {
+    font-size: 36pt;
+    color: #cc0000;
+}
+
+.edition {
+    width: 14ex;
+    font-size: 12pt;
+    color: #cc0000;
+    font-weight: bold;
+    text-align: right;
+}
+
+#large-screen-edition {
+    display: none;
+}
+
+#small-screen-edition {
+    display: block;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    column-gap: 20px;
+    max-width: 815px;
+}
+
+.main-article {
+    flex: 2;
+    max-width: 500px;
+}
+
+.main-article h2 {
+    font-size: 18pt;
+    color: black;
+    font-weight: bold;
+}
+
+.article-image {
+    float: left;
+    margin: 0 20px 20px 0;
+    max-width: 100%;
+    height: auto;
+}
+
+.article-text {
+    float: right;
+    overflow: hidden;
+}
+
+.calendar {
+    flex: 1;
+    max-width: 300px;
+    padding: 10px 0;
+}
+
+.calendar h3 {
+    font-size: 14pt;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.calendar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.calendar li {
+    font-size: 12pt;
+    font-style: italic;
+    border-bottom: 1px solid black;
+    padding: 5px 0;
+}
+
+.calendar li:first-child {
+    border-top: 1px solid black;
+}
+
+@media (max-width: 815px) {
+    .banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .banner h1 {
+        font-size: 32pt;
+        margin-bottom: 10px;
+    }
+
+    .edition {
+        width: auto; 
+        font-size: 12pt;
+        text-align: left;
+        display: block;
+    }
+
+    #large-screen-edition {
+        display: none;
+    }
+
+    #small-screen-edition {
+        display: block;
+    }
+
+    .content {
+        flex-direction: column;
+        max-width: 100%;
+    }
+
+    .main-article {
+        max-width: none;
+        margin-right: 0;
+    }
+
+    .calendar {
+        max-width: none;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 650px) {
+    .banner h1 {
+        font-size: 28pt;
+    }
+
+    .edition {
+        font-size: 12pt;
+    }
+
+    .article-image {
+        width: calc(100% - 10px);
+        float: none;
+        margin: 0 auto 20px;
+    }
+}

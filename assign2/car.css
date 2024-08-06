@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    text-align: left;
+    margin-left: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 5px; /* Add this line to decrease space between columns */
+}
+
+.configuration-section, .color-selection {
+    width: 45%;
+    margin-right: 5px;
+}
+
+.section-header {
+    background-color: #666;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-align: left;
+    border: 1px solid black;
+}
+
+.section-content {
+    border: 1px solid black;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.price {
+    float: right;
+}
+
+.total-price-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#totalPrice {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#colorSelect {
+    margin-bottom: 10px;
+}
+
+.color-selection .section-content {
+    display: flex;
+    align-items: center;
+}
+
+.color-selection .color-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid black;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.color-selection .color-options div {
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border: 1px solid #666;
+    background-color: #f0f0f0;
+    width: 50px;
+    text-align: center;
+}
+
+.color-selection .color-options div:hover {
+    background-color: #ccc;
+}
+
+.color-selection .color-options .selected {
+    background-color: blue;
+    color: white;
+}
+
+#carImage {
+    max-width: 300px;
+    max-height: 200px;
+}

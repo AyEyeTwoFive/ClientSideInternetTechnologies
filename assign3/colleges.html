@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bay Area Colleges and Universities</title>
+    <link rel="stylesheet" href="colleges.css">
+</head>
+<body>
+    <h1>Bay Area Colleges and Universities</h1>
+    <div id="container">
+        <table id="collegeTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>SAT High</th>
+                    <th>SAT Low</th>
+                    <th>Tuition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be inserted here by JavaScript -->
+            </tbody>
+        </table>
+
+        <div id="searchCriteria">
+            <h2>Search Criteria</h2>
+            <form id="searchForm">
+                <div id="ownershipOptions">
+                    <label>
+                        <input type="radio" name="ownership" value="public"> Public
+                    </label>
+                    <label>
+                        <input type="radio" name="ownership" value="private"> Private
+                    </label>
+                    <label>
+                        <input type="radio" name="ownership" value="any" checked> Don't Care
+                    </label>
+                </div>
+                <label>
+                    Maximum Tuition: <input type="number" id="maxTuition">
+                    <p>leave blank for don't care</p>
+                </label>
+                <label>
+                    Maximum High SAT: <input type="number" id="maxHighSAT">
+                    <p>leave blank for don't care</p>
+                </label>
+                <label>
+                    Minimum Low SAT: <input type="number" id="minLowSAT" value="1000">
+                    <p>leave blank for don't care</p>
+                </label>
+                <button type="button" onclick="updateTable()">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="colleges.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

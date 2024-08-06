@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1, h2 {
+    background-color: darkgray;
+    color: black;
+    padding: 10px;
+    margin: 0;
+}
+
+h1 {
+    background-color: white;
+}
+
+#container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#collegeTable {
+    border-collapse: collapse;
+    width: 60%;
+    border: 2px solid black;
+}
+
+#collegeTable th {
+    background-color: darkgray;
+    color: black;
+    padding: 10px;
+    border: 2px solid black;
+}
+
+#collegeTable td {
+    padding: 10px;
+    border: 2px solid black;
+}
+
+#collegeTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#collegeTable tr:nth-child(odd) {
+    background-color: white;
+}
+
+#searchCriteria {
+    border: 1px solid darkgray;
+    padding: 20px;
+    width: 35%;
+}
+
+#searchCriteria label {
+    display: block;
+    margin: 10px 0;
+}
+
+#searchCriteria p {
+    font-size: 12px;
+    margin: 5px 0 0 0;
+}
+
+#ownershipOptions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+button {
+    display: block;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: darkgray;
+    color: black;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: gray;
+}
