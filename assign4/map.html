@@ -18,7 +18,7 @@
             top: 50px;
             bottom: 50px;
             left: 50px;
-            right: 50px;
+            right: 150px;
             border: 2px solid black;
             overflow: hidden;
         }
@@ -30,7 +30,7 @@
         }
         #controls {
             position: absolute;
-            top: 10px;
+            top: 50px;
             right: 10px;
             display: flex;
             flex-direction: column;
@@ -47,12 +47,24 @@
     <img id="map" src="map-m.gif" alt="Stanford Map">
 </div>
 <div id="controls">
-    <button id="zoomIn">+</button>
-    <button id="zoomOut">-</button>
-    <button id="up">&#9650;</button>
-    <button id="down">&#9660;</button>
-    <button id="left">&#9668;</button>
-    <button id="right">&#9658;</button>
+    <div id="zoomControls" style="display: flex; justify-content: center;">
+        <button id="zoomIn">+</button>
+        <div style="width: 10px;"></div>
+        <button id="zoomOut">-</button>
+    </div>
+    <div id="movementControls">
+        <div style="display: flex; justify-content: center;">
+            <button id="up">&#9650;</button>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <button id="left">&#9668;</button>
+            <div style="width: 40px;"></div>
+            <button id="right">&#9658;</button>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <button id="down">&#9660;</button>
+        </div>
+    </div>
 </div>
 
 <script>
