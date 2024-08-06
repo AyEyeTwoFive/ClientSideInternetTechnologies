@@ -26,7 +26,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            cursor: move;
+            cursor: default;
         }
         #controls {
             position: absolute;
@@ -104,6 +104,7 @@
         startY = e.clientY;
         startLeft = parseInt(map.style.left, 10);
         startTop = parseInt(map.style.top, 10);
+        map.style.cursor = "move"; // Change cursor to move
 
         document.addEventListener("mousemove", onMouseMove);
         document.addEventListener("mouseup", onMouseUp);
@@ -117,12 +118,19 @@
     function onMouseUp() {
         document.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseup", onMouseUp);
+        map.style.cursor = "default"; // Change cursor back
     }
 
     map.addEventListener("dblclick", function(e) {
         var rect = mapFrame.getBoundingClientRect();
-        var newLeft = rect.width / 2 - (e.clientX - rect.left);
-        var newTop = rect.height / 2 - (e.clientY - rect.top);
+        var clickX = e.clientX - rect.left;
+        var clickY = e.clientY - rect.top;
+        var centerX = rect.width / 2;
+        var centerY = rect.height / 2;
+        var distanceX = clickX - centerX;
+        var distanceY = clickY - centerY;
+        var newLeft = parseInt(map.style.left, 10) - distanceX;
+        var newTop = parseInt(map.style.top, 10) - distanceY;
         map.style.left = newLeft + "px";
         map.style.top = newTop + "px";
     });
