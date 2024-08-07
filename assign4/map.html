@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>Stanford Map</title>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -13,6 +15,7 @@
             justify-content: center;
             align-items: center;
         }
+
         #mapFrame {
             position: absolute;
             top: 50px;
@@ -22,12 +25,14 @@
             border: 2px solid black;
             overflow: hidden;
         }
+
         #map {
             position: absolute;
             top: 0;
             left: 0;
             cursor: default;
         }
+
         #controls {
             position: absolute;
             top: 50px;
@@ -36,181 +41,225 @@
             flex-direction: column;
             gap: 5px;
         }
+
         #controls button {
             width: 40px;
             height: 40px;
         }
     </style>
 </head>
+
 <body>
-<div id="mapFrame">
-    <img id="map" src="map-m.gif" alt="Stanford Map">
-</div>
-<div id="controls">
-    <div id="zoomControls" style="display: flex; justify-content: center;">
-        <button id="zoomIn">+</button>
-        <div style="width: 10px;"></div>
-        <button id="zoomOut">-</button>
+    <div id="mapFrame">
+        <img id="map" src="map-m.gif" alt="Stanford Map">
     </div>
-    <div id="movementControls">
-        <div style="display: flex; justify-content: center;">
-            <button id="up">&#9650;</button>
+    <div id="controls">
+        <div id="zoomControls" style="display: flex; justify-content: center;">
+            <button id="zoomIn">+</button>
+            <div style="width: 10px;"></div>
+            <button id="zoomOut">-</button>
         </div>
-        <div style="display: flex; justify-content: space-between;">
-            <button id="left">&#9668;</button>
-            <div style="width: 40px;"></div>
-            <button id="right">&#9658;</button>
-        </div>
-        <div style="display: flex; justify-content: center;">
-            <button id="down">&#9660;</button>
+        <div id="movementControls">
+            <div style="display: flex; justify-content: center;">
+                <button id="up">&#9650;</button>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <button id="left">&#9668;</button>
+                <div style="width: 40px;"></div>
+                <button id="right">&#9658;</button>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button id="down">&#9660;</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    "use strict";
-    var map = document.getElementById("map");
-    var mapFrame = document.getElementById("mapFrame");
-    var controls = document.getElementById("controls");
+    <script>
+        "use strict";
+        var map = document.getElementById("map");
+        var mapFrame = document.getElementById("mapFrame");
+        var controls = document.getElementById("controls");
 
-    var zoomLevels = ["map-s.gif", "map-m.gif", "map-l.gif", "map-xl.gif"];
-    var currentZoom = 1;
+        var zoomLevels = ["map-s.gif", "map-m.gif", "map-l.gif", "map-xl.gif"];
+        var currentZoom = 1;
 
-    var startX, startY, startLeft, startTop;
+        var startX, startY, startLeft, startTop;
 
-    function getCenterCoordinates() {
-        var rect = mapFrame.getBoundingClientRect();
-        var centerX = (rect.width / 2) - parseInt(map.style.left, 10);
-        var centerY = (rect.height / 2) - parseInt(map.style.top, 10);
-        return { x: centerX, y: centerY };
-    }
+        function getCenterCoordinates() {
+            var rect = mapFrame.getBoundingClientRect();
+            var centerX = (rect.width / 2) - parseInt(map.style.left, 10);
+            var centerY = (rect.height / 2) - parseInt(map.style.top, 10);
+            return { x: centerX, y: centerY };
+        }
 
-    function setCenterCoordinates(center) {
-        var rect = mapFrame.getBoundingClientRect();
-        map.style.left = (rect.width / 2 - center.x) + "px";
-        map.style.top = (rect.height / 2 - center.y) + "px";
-    }
+        function setCenterCoordinates(center) {
+            var rect = mapFrame.getBoundingClientRect();
+            map.style.left = (rect.width / 2 - center.x) + "px";
+            map.style.top = (rect.height / 2 - center.y) + "px";
+        }
 
-    function updateZoom(zoomChange) {
-    var center = getCenterCoordinates();
-    var oldZoom = currentZoom;
-    currentZoom = Math.max(0, Math.min(zoomLevels.length - 1, currentZoom + zoomChange));
-    map.src = zoomLevels[currentZoom];
+        function updateZoom(zoomChange) {
+            var center = getCenterCoordinates();
+            var oldZoom = currentZoom;
+            currentZoom = Math.max(0, Math.min(zoomLevels.length - 1, currentZoom + zoomChange));
+            map.src = zoomLevels[currentZoom];
 
-    // Adjust center coordinates based on the new zoom level
-    var zoomFactor = Math.pow(2, currentZoom - oldZoom);
-    var newCenter = {
-        x: center.x * zoomFactor,
-        y: center.y * zoomFactor
-    };
+            // Adjust center coordinates based on the new zoom level
+            var zoomFactor = Math.pow(2, currentZoom - oldZoom);
+            var newCenter = {
+                x: center.x * zoomFactor,
+                y: center.y * zoomFactor
+            };
 
-    setCenterCoordinates(newCenter);
+            setCenterCoordinates(newCenter);
 
-    // Ensure the map stays within the boundaries
-    var rect = mapFrame.getBoundingClientRect();
-    var mapRect = map.getBoundingClientRect();
-    var minLeft = rect.width - mapRect.width;
-    var minTop = rect.height - mapRect.height;
+            // Ensure the map stays within the boundaries
+            var rect = mapFrame.getBoundingClientRect();
+            var mapRect = map.getBoundingClientRect();
+            var minLeft = rect.width - mapRect.width;
+            var minTop = rect.height - mapRect.height;
 
-    var newLeft = parseInt(map.style.left, 10);
-    var newTop = parseInt(map.style.top, 10);
+            var newLeft = parseInt(map.style.left, 10);
+            var newTop = parseInt(map.style.top, 10);
 
-    newLeft = Math.min(0, Math.max(minLeft, newLeft));
-    newTop = Math.min(0, Math.max(minTop, newTop));
+            newLeft = Math.min(0, Math.max(minLeft, newLeft));
+            newTop = Math.min(0, Math.max(minTop, newTop));
 
-    map.style.left = newLeft + "px";
-    map.style.top = newTop + "px";
-}
+            map.style.left = newLeft + "px";
+            map.style.top = newTop + "px";
+        }
 
-    map.addEventListener("mousedown", function(e) {
-        e.preventDefault();
-        startX = e.clientX;
-        startY = e.clientY;
-        startLeft = parseInt(map.style.left, 10);
-        startTop = parseInt(map.style.top, 10);
-        map.style.cursor = "move"; // Change cursor to move
+        map.addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            startX = e.clientX;
+            startY = e.clientY;
+            startLeft = parseInt(map.style.left, 10);
+            startTop = parseInt(map.style.top, 10);
+            map.style.cursor = "move"; // Change cursor to move
 
-        document.addEventListener("mousemove", onMouseMove);
-        document.addEventListener("mouseup", onMouseUp);
-    });
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        });
 
-    function onMouseMove(e) {
-        var newLeft = startLeft + e.clientX - startX;
-        var newTop = startTop + e.clientY - startY;
+        function onMouseMove(e) {
+            var newLeft = startLeft + e.clientX - startX;
+            var newTop = startTop + e.clientY - startY;
 
-        // Calculate boundaries
-        var rect = mapFrame.getBoundingClientRect();
-        var mapRect = map.getBoundingClientRect();
-        var minLeft = rect.width - mapRect.width;
-        var minTop = rect.height - mapRect.height;
+            // Calculate boundaries
+            var rect = mapFrame.getBoundingClientRect();
+            var mapRect = map.getBoundingClientRect();
+            var minLeft = rect.width - mapRect.width;
+            var minTop = rect.height - mapRect.height;
 
-        // Ensure the map stays within the boundaries
-        newLeft = Math.min(0, Math.max(minLeft, newLeft));
-        newTop = Math.min(0, Math.max(minTop, newTop));
+            // Ensure the map stays within the boundaries
+            newLeft = Math.min(0, Math.max(minLeft, newLeft));
+            newTop = Math.min(0, Math.max(minTop, newTop));
 
-        map.style.left = newLeft + "px";
-        map.style.top = newTop + "px";
-    }
+            map.style.left = newLeft + "px";
+            map.style.top = newTop + "px";
+        }
 
-    function onMouseUp() {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-        map.style.cursor = "default"; // Change cursor back
-    }
+        function onMouseUp() {
+            document.removeEventListener("mousemove", onMouseMove);
+            document.removeEventListener("mouseup", onMouseUp);
+            map.style.cursor = "default"; // Change cursor back
+        }
 
-    map.addEventListener("dblclick", function(e) {
-        var rect = mapFrame.getBoundingClientRect();
-        var clickX = e.clientX - rect.left;
-        var clickY = e.clientY - rect.top;
-        var centerX = rect.width / 2;
-        var centerY = rect.height / 2;
-        var distanceX = clickX - centerX;
-        var distanceY = clickY - centerY;
-        var newLeft = parseInt(map.style.left, 10) - distanceX;
-        var newTop = parseInt(map.style.top, 10) - distanceY;
-        map.style.left = newLeft + "px";
-        map.style.top = newTop + "px";
-    });
+        map.addEventListener("dblclick", function (e) {
+            var rect = mapFrame.getBoundingClientRect();
+            var clickX = e.clientX - rect.left;
+            var clickY = e.clientY - rect.top;
+            var centerX = rect.width / 2;
+            var centerY = rect.height / 2;
+            var distanceX = clickX - centerX;
+            var distanceY = clickY - centerY;
+            var newLeft = parseInt(map.style.left, 10) - distanceX;
+            var newTop = parseInt(map.style.top, 10) - distanceY;
+            map.style.left = newLeft + "px";
+            map.style.top = newTop + "px";
+        });
 
-    window.addEventListener("resize", function() {
-        var rect = mapFrame.getBoundingClientRect();
-        var centerX = rect.width / 2;
-        var centerY = rect.height / 2;
-        map.style.left = (centerX - map.width / 2) + "px";
-        map.style.top = (centerY - map.height / 2) + "px";
-    });
+        window.addEventListener("resize", function () {
+            var rect = mapFrame.getBoundingClientRect();
+            var centerX = rect.width / 2;
+            var centerY = rect.height / 2;
+            map.style.left = (centerX - map.width / 2) + "px";
+            map.style.top = (centerY - map.height / 2) + "px";
+        });
 
-    document.getElementById("zoomIn").addEventListener("click", function() {
-        updateZoom(1);
-    });
+        document.getElementById("zoomIn").addEventListener("click", function () {
+            updateZoom(1);
+        });
 
-    document.getElementById("zoomOut").addEventListener("click", function() {
-        updateZoom(-1);
-    });
+        document.getElementById("zoomOut").addEventListener("click", function () {
+            updateZoom(-1);
+        });
 
-    document.getElementById("up").addEventListener("click", function() {
-        step = mapFrame.clientHeight / 2;
-        newTop = parseInt(map.style.top, 10) + step;
-        newTop = Math.min(0, newTop);
-        map.style.top = newTop + "px";
-    });
+        document.getElementById("up").addEventListener("click", function () {
+            var step = mapFrame.clientHeight / 2;
+            var newTop = parseInt(map.style.top, 10) + step;
 
-    document.getElementById("down").addEventListener("click", function() {
-        map.style.top = (parseInt(map.style.top, 10) - mapFrame.clientHeight / 2) + "px";
-    });
+            // Calculate boundaries
+            var rect = mapFrame.getBoundingClientRect();
+            var mapRect = map.getBoundingClientRect();
+            var minTop = rect.height - mapRect.height;
 
-    document.getElementById("left").addEventListener("click", function() {
-        map.style.left = (parseInt(map.style.left, 10) + mapFrame.clientWidth / 2) + "px";
-    });
+            // Ensure the map stays within the boundaries
+            newTop = Math.min(0, Math.max(minTop, newTop));
 
-    document.getElementById("right").addEventListener("click", function() {
-        map.style.left = (parseInt(map.style.left, 10) - mapFrame.clientWidth / 2) + "px";
-    });
+            map.style.top = newTop + "px";
+        });
 
-    window.onload = function() {
-        map.style.left = (mapFrame.clientWidth / 2 - map.width / 2) + "px";
-        map.style.top = (mapFrame.clientHeight / 2 - map.height / 2) + "px";
-    };
-</script>
+        document.getElementById("down").addEventListener("click", function () {
+            var step = mapFrame.clientHeight / 2;
+            var newTop = parseInt(map.style.top, 10) - step;
+
+            // Calculate boundaries
+            var rect = mapFrame.getBoundingClientRect();
+            var mapRect = map.getBoundingClientRect();
+            var minTop = rect.height - mapRect.height;
+
+            // Ensure the map stays within the boundaries
+            newTop = Math.min(0, Math.max(minTop, newTop));
+
+            map.style.top = newTop + "px";
+        });
+
+        document.getElementById("left").addEventListener("click", function () {
+            var step = mapFrame.clientWidth / 2;
+            var newLeft = parseInt(map.style.left, 10) + step;
+
+            // Calculate boundaries
+            var rect = mapFrame.getBoundingClientRect();
+            var mapRect = map.getBoundingClientRect();
+            var minLeft = rect.width - mapRect.width;
+
+            // Ensure the map stays within the boundaries
+            newLeft = Math.min(0, Math.max(minLeft, newLeft));
+
+            map.style.left = newLeft + "px";
+        });
+
+        document.getElementById("right").addEventListener("click", function () {
+            var step = mapFrame.clientWidth / 2;
+            var newLeft = parseInt(map.style.left, 10) - step;
+
+            // Calculate boundaries
+            var rect = mapFrame.getBoundingClientRect();
+            var mapRect = map.getBoundingClientRect();
+            var minLeft = rect.width - mapRect.width;
+
+            // Ensure the map stays within the boundaries
+            newLeft = Math.min(0, Math.max(minLeft, newLeft));
+
+            map.style.left = newLeft + "px";
+        });
+
+        window.onload = function () {
+            map.style.left = (mapFrame.clientWidth / 2 - map.width / 2) + "px";
+            map.style.top = (mapFrame.clientHeight / 2 - map.height / 2) + "px";
+        };
+    </script>
 </body>
+
 </html>
