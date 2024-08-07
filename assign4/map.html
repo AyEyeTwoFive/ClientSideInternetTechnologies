@@ -92,11 +92,35 @@
     }
 
     function updateZoom(zoomChange) {
-        var center = getCenterCoordinates();
-        currentZoom = Math.max(0, Math.min(zoomLevels.length - 1, currentZoom + zoomChange));
-        map.src = zoomLevels[currentZoom];
-        setCenterCoordinates(center);
-    }
+    var center = getCenterCoordinates();
+    var oldZoom = currentZoom;
+    currentZoom = Math.max(0, Math.min(zoomLevels.length - 1, currentZoom + zoomChange));
+    map.src = zoomLevels[currentZoom];
+
+    // Adjust center coordinates based on the new zoom level
+    var zoomFactor = Math.pow(2, currentZoom - oldZoom);
+    var newCenter = {
+        x: center.x * zoomFactor,
+        y: center.y * zoomFactor
+    };
+
+    setCenterCoordinates(newCenter);
+
+    // Ensure the map stays within the boundaries
+    var rect = mapFrame.getBoundingClientRect();
+    var mapRect = map.getBoundingClientRect();
+    var minLeft = rect.width - mapRect.width;
+    var minTop = rect.height - mapRect.height;
+
+    var newLeft = parseInt(map.style.left, 10);
+    var newTop = parseInt(map.style.top, 10);
+
+    newLeft = Math.min(0, Math.max(minLeft, newLeft));
+    newTop = Math.min(0, Math.max(minTop, newTop));
+
+    map.style.left = newLeft + "px";
+    map.style.top = newTop + "px";
+}
 
     map.addEventListener("mousedown", function(e) {
         e.preventDefault();
@@ -111,8 +135,21 @@
     });
 
     function onMouseMove(e) {
-        map.style.left = (startLeft + e.clientX - startX) + "px";
-        map.style.top = (startTop + e.clientY - startY) + "px";
+        var newLeft = startLeft + e.clientX - startX;
+        var newTop = startTop + e.clientY - startY;
+
+        // Calculate boundaries
+        var rect = mapFrame.getBoundingClientRect();
+        var mapRect = map.getBoundingClientRect();
+        var minLeft = rect.width - mapRect.width;
+        var minTop = rect.height - mapRect.height;
+
+        // Ensure the map stays within the boundaries
+        newLeft = Math.min(0, Math.max(minLeft, newLeft));
+        newTop = Math.min(0, Math.max(minTop, newTop));
+
+        map.style.left = newLeft + "px";
+        map.style.top = newTop + "px";
     }
 
     function onMouseUp() {
@@ -152,7 +189,10 @@
     });
 
     document.getElementById("up").addEventListener("click", function() {
-        map.style.top = (parseInt(map.style.top, 10) + mapFrame.clientHeight / 2) + "px";
+        step = mapFrame.clientHeight / 2;
+        newTop = parseInt(map.style.top, 10) + step;
+        newTop = Math.min(0, newTop);
+        map.style.top = newTop + "px";
     });
 
     document.getElementById("down").addEventListener("click", function() {

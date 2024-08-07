@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            gap: 10px;
+        }
+        input {
+            width: 100px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="input1" />
+    <input type="text" id="input2" />
+    <input type="text" id="input3" />
+    <hr style="width: 120px; margin: 0;">
+    <div>
+        <input type="text" id="total" readonly />
+        <button onclick="calculateTotal()">Total</button>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const input1 = parseInt(document.getElementById('input1').value) || 0;
+            const input2 = parseInt(document.getElementById('input2').value) || 0;
+            const input3 = parseInt(document.getElementById('input3').value) || 0;
+            const total = input1 + input2 + input3;
+            document.getElementById('total').value = total;
+        }
+    </script>
+</body>
+</html>

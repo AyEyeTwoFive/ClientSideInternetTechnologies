@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        #product-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <label for="max-price">Max Price:</label>
+        <input type="text" id="max-price" />
+        <button onclick="filterProducts()">Search</button>
+    </div>
+    <div id="product-list">
+        <!-- Products will be listed here -->
+    </div>
+
+    <script>
+        const items = [
+            {name: "Sweatshirt", price: 49.99},
+            {name: "T-Shirt", price: 29.99},
+            {name: "Hat", price: 19.99},
+            {name: "Mug", price: 14.99}
+        ];
+
+        function displayProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = ''; // Clear current list
+            products.forEach(product => {
+                const productElement = document.createElement('div');
+                productElement.textContent = `${product.name}: $${product.price.toFixed(2)}`;
+                productList.appendChild(productElement);
+            });
+        }
+
+        function filterProducts() {
+            const maxPrice = parseFloat(document.getElementById('max-price').value);
+            const filteredItems = isNaN(maxPrice) ? items : items.filter(item => item.price <= maxPrice);
+            displayProducts(filteredItems);
+        }
+
+        // Display all products on initial load
+        window.onload = () => {
+            displayProducts(items);
+        };
+    </script>
+</body>
+</html>

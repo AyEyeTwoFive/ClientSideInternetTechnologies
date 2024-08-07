@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Square</title>
+    <style>
+        #moveableSquare {
+            position: fixed;
+            top: 100px;
+            left: 100px;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            z-index: 1;
+        }
+
+        #dropRectangle {
+            position: fixed;
+            top: 100px;
+            left: 300px;
+            width: 300px;
+            height: 150px;
+            border: solid 1px black;
+            z-index: 0;
+        }
+
+        .over {
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="moveableSquare"></div>
+    <div id="dropRectangle"></div>
+    <script>
+        const square = document.getElementById('moveableSquare');
+        const rectangle = document.getElementById('dropRectangle');
+
+        let offsetX, offsetY;
+
+        square.addEventListener('mousedown', (e) => {
+            offsetX = e.clientX - square.offsetLeft;
+            offsetY = e.clientY - square.offsetTop;
+            document.addEventListener('mousemove', moveSquare);
+            document.addEventListener('mouseup', stopMovingSquare);
+        });
+
+        function moveSquare(e) {
+            square.style.left = `${e.clientX - offsetX}px`;
+            square.style.top = `${e.clientY - offsetY}px`;
+            checkOverlap();
+        }
+
+        function stopMovingSquare() {
+            document.removeEventListener('mousemove', moveSquare);
+            document.removeEventListener('mouseup', stopMovingSquare);
+        }
+
+        function checkOverlap() {
+            const squareRect = square.getBoundingClientRect();
+            const rectRect = rectangle.getBoundingClientRect();
+
+            if (
+                squareRect.left < rectRect.right &&
+                squareRect.right > rectRect.left &&
+                squareRect.top < rectRect.bottom &&
+                squareRect.bottom > rectRect.top
+            ) {
+                rectangle.classList.add('over');
+            } else {
+                rectangle.classList.remove('over');
+            }
+        }
+    </script>
+</body>
+</html>
