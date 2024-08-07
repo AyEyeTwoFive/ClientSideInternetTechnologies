@@ -102,31 +102,46 @@
             var center = getCenterCoordinates();
             var oldZoom = currentZoom;
             currentZoom = Math.max(0, Math.min(zoomLevels.length - 1, currentZoom + zoomChange));
+            var oldMapSrc = map.src;
             map.src = zoomLevels[currentZoom];
 
-            // Adjust center coordinates based on the new zoom level
-            var zoomFactor = Math.pow(2, currentZoom - oldZoom);
-            var newCenter = {
-                x: center.x * zoomFactor,
-                y: center.y * zoomFactor
+            // Wait for the new image to load to get its dimensions
+            map.onload = function() {
+                var oldImage = new Image();
+                oldImage.src = oldMapSrc;
+                oldImage.onload = function() {
+                    var oldWidth = oldImage.width;
+                    var oldHeight = oldImage.height;
+                    var newWidth = map.width;
+                    var newHeight = map.height;
+
+                    // Calculate the scaling factor based on the dimensions of the images
+                    var scaleX = newWidth / oldWidth;
+                    var scaleY = newHeight / oldHeight;
+
+                    var newCenter = {
+                        x: center.x * scaleX,
+                        y: center.y * scaleY
+                    };
+
+                    setCenterCoordinates(newCenter);
+
+                    // Ensure the map stays within the boundaries
+                    var rect = mapFrame.getBoundingClientRect();
+                    var mapRect = map.getBoundingClientRect();
+                    var minLeft = rect.width - mapRect.width;
+                    var minTop = rect.height - mapRect.height;
+
+                    var newLeft = parseInt(map.style.left, 10);
+                    var newTop = parseInt(map.style.top, 10);
+
+                    newLeft = Math.min(0, Math.max(minLeft, newLeft));
+                    newTop = Math.min(0, Math.max(minTop, newTop));
+
+                    map.style.left = newLeft + "px";
+                    map.style.top = newTop + "px";
+                };
             };
-
-            setCenterCoordinates(newCenter);
-
-            // Ensure the map stays within the boundaries
-            var rect = mapFrame.getBoundingClientRect();
-            var mapRect = map.getBoundingClientRect();
-            var minLeft = rect.width - mapRect.width;
-            var minTop = rect.height - mapRect.height;
-
-            var newLeft = parseInt(map.style.left, 10);
-            var newTop = parseInt(map.style.top, 10);
-
-            newLeft = Math.min(0, Math.max(minLeft, newLeft));
-            newTop = Math.min(0, Math.max(minTop, newTop));
-
-            map.style.left = newLeft + "px";
-            map.style.top = newTop + "px";
         }
 
         map.addEventListener("mousedown", function (e) {
