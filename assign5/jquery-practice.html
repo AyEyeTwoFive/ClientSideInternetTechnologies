@@ -3,11 +3,28 @@
 <head>
 <meta charset="UTF-8" />
 <title>Stanford Graduation</title>
+
 <style type="text/css">
 .redElements {
 	color: red;
 }
 </style>
+
+<script src="jquery-3.3.1.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Turn all headings red
+            $("#theRedButton").click(function() {
+                $("h1, h2, h3").addClass("redElements");
+            });
+
+            // Fade out the "Speakers" heading
+            $("#theSpeakersButton").click(function() {
+                $("#speakerHeading").fadeOut(1000);
+            });
+        });
+    </script>
+
 </head>
 <body>
 <h1>Graduation</h1>
@@ -32,7 +49,11 @@ ties.</p>
 <div>
 <input type="button" value="Red Headings" id="theRedButton" />
 <input type="button" value="Fade Out Speaker" id="theSpeakersButton" />
+
 </div>
 
 </body>
+
 </html>
+
+
